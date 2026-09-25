@@ -39,11 +39,17 @@ jobs:
             cp app.py main.py
           fi
 
-      - name: Build APK
-        env:
-          BUILDOZER_WARN_ON_ROOT: "0"
-        run: |
-          buildozer android debug
+      - name: Fix ReportLab recipe
+  run: |
+    P4A_DIR=".buildozer/android/platform/python-for-android"
+    buildozer android update
+    rm -rf "$P4A_DIR/pythonforandroid/recipes/reportlab"
+
+- name: Build APK
+  env:
+    BUILDOZER_WARN_ON_ROOT: "0"
+  run: |
+    buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
