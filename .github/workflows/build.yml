@@ -39,14 +39,10 @@ jobs:
           fi
 
       - name: Prepare python-for-android
-        env:
-          BUILDOZER_WARN_ON_ROOT: "0"
         run: |
-          buildozer android update
-
-      - name: Fix ReportLab recipe
-        run: |
-          rm -rf .buildozer/android/platform/python-for-android/pythonforandroid/recipes/reportlab
+          git clone --depth 1 https://github.com/kivy/python-for-android.git p4a
+          rm -rf p4a/pythonforandroid/recipes/reportlab
+          echo "p4a.source_dir = $GITHUB_WORKSPACE/p4a" >> buildozer.spec
 
       - name: Build APK
         env:
