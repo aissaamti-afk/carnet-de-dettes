@@ -11,7 +11,7 @@ source.include_exts = py,png,jpg,jpeg,kv,atlas,ttf,txt,json
 source.exclude_dirs = .git,.github,bin,.buildozer,venv,__pycache__
 
 # Python requirements
-requirements = python3,kivy,reportlab
+requirements = python3,kivy
 
 # Display
 orientation = portrait
