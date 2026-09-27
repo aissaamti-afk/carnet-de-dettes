@@ -1441,7 +1441,7 @@ class DebtBook(App):
         options = [
             ("Débiteurs", "Clients ayant un solde restant", self.show_debtors, RED),
             ("Sauvegarde / Restaurer", "Protéger ou restaurer vos données", self.backup_manager, CARD_LIGHT),
-            ("Exporter un relevé PDF", "Créer un relevé détaillé pour un client", self.export_pdf_select, BLUE),
+            
             ("À propos", "Informations sur l'application", self.about_page, CARD_LIGHT),
         ]
 
