@@ -540,9 +540,9 @@ class DebtBook(App):
         Window.clearcolor = BG
 
         self.root_layout = BoxLayout(
-            orientation="vertical",
-            padding=(dp(12), dp(8), dp(12), dp(8)),
-            spacing=dp(8)
+    orientation="vertical",
+    padding=(dp(12), dp(8), dp(12), dp(40)),
+    spacing=dp(8)
         )
 
         self.content = BoxLayout(
