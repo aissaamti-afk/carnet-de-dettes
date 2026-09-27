@@ -20,27 +20,50 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git zip unzip autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            cmake libffi-dev libssl-dev automake \
-            autopoint gettext
-          python -m pip install --upgrade pip
-          pip install "cython<3" buildozer
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            autoconf \
+            libtool \
+            pkg-config \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            automake \
+            autopoint \
+            gettext
 
-      - name: Prepare main.py
+      - name: Install Python dependencies
         run: |
-          if [ ! -f main.py ] && [ -f app.py ]; then
-            cp app.py main.py
-          fi
+          python -m pip install --upgrade pip setuptools
+          python -m pip install "cython==0.29.34"
+          python -m pip install buildozer
+
+      - name: Check project files
+        run: |
+          echo "===== PROJECT FILES ====="
+          ls -la
+          echo "===== PYTHON VERSION ====="
+          python --version
+          echo "===== BUILDOZER VERSION ====="
+          buildozer --version
+          echo "===== MAIN.PY ====="
+          test -f main.py && echo "main.py OK" || (echo "ERROR: main.py missing" && exit 1)
+          echo "===== BUILDOZER.SPEC ====="
+          test -f buildozer.spec && echo "buildozer.spec OK" || (echo "ERROR: buildozer.spec missing" && exit 1)
 
       - name: Clean old build
         run: |
@@ -52,6 +75,12 @@ jobs:
           BUILDOZER_WARN_ON_ROOT: "0"
         run: |
           buildozer -v android debug
+
+      - name: Show APK files
+        if: always()
+        run: |
+          echo "===== BIN DIRECTORY ====="
+          ls -lah bin || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
